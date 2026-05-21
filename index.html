@@ -232,19 +232,24 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--bone-dim)}
 
 /* ---------- mascot guide ---------- */
-.guide{position:fixed;right:24px;bottom:24px;z-index:8500;display:flex;align-items:flex-end;gap:12px;
-  transform:translateY(28px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.guide{position:fixed;right:24px;bottom:24px;z-index:8500;
+  display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+  transform:translateY(28px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease);
+  pointer-events:none}
 .guide.show{opacity:1;transform:none}
-.guide .av{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 50% 30%,#20271a,#0d100b);
-  border:2px solid var(--gold);display:grid;place-items:end center;overflow:hidden;flex:0 0 auto;
-  box-shadow:0 12px 30px rgba(0,0,0,.5);animation:bob 4s ease-in-out infinite}
-.guide .av svg{width:96%;height:96%;margin-bottom:-4px}
-.guide .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
-@keyframes bob{50%{transform:translateY(-6px)}}
+.guide .av,.guide .bubble{pointer-events:auto}
+.guide .av{width:130px;height:130px;flex:0 0 auto;
+  animation:bob 3.6s ease-in-out infinite;
+  filter:drop-shadow(0 20px 28px rgba(0,0,0,.55)) drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.guide .av img,.guide .av svg{width:100%;height:100%;object-fit:contain;display:block;background:transparent}
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(-1.5deg)}
+  50%{transform:translateY(-12px) rotate(1.5deg)}
+}
 .bubble{position:relative;max-width:248px;background:var(--bone);color:#1a1710;border-radius:16px;padding:13px 16px;
   font-size:13.5px;line-height:1.42;font-weight:500;box-shadow:0 14px 34px rgba(0,0,0,.45)}
 .bubble b{color:var(--gold-deep)}
-.bubble::after{content:"";position:absolute;left:-7px;bottom:16px;border:8px solid transparent;border-right-color:var(--bone);border-left:0}
+.bubble::after{content:"";position:absolute;right:40px;top:-7px;border:8px solid transparent;border-bottom-color:var(--bone);border-top:0}
 .bubble .who{display:block;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold-deep);margin-bottom:3px;text-transform:uppercase}
 .guide .x{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;background:#1a1710;color:var(--bone);
   border:1px solid var(--line);cursor:pointer;font-size:13px;line-height:20px;text-align:center}
@@ -263,7 +268,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   .hero-meta{gap:20px}.hero-meta .m b{font-size:21px}
   .checklist{grid-template-columns:1fr}
   .foot{grid-template-columns:1fr}
-  .guide{right:14px;bottom:14px}.bubble{max-width:200px}
+  .guide{right:14px;bottom:14px}.guide .av{width:104px;height:104px}.bubble{max-width:200px}
   .signup input{min-width:100%}
   .hero-don{display:none}
 }
