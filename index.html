@@ -67,9 +67,11 @@ header.nav.solid{background:rgba(9,11,8,.82);backdrop-filter:blur(14px);padding-
 .brand svg{width:34px;height:34px;flex:0 0 auto}
 .brand .wm{font-family:'Anton',sans-serif;font-size:25px;letter-spacing:3px;text-transform:uppercase;line-height:1}
 .brand .wm b{color:var(--gold)}
-.brand-logo{height:46px;width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
-.brand-logo-foot{height:38px}
-@media(max-width:560px){.brand-logo{height:38px}.brand-logo-foot{height:32px}}
+.brand-logo{height:clamp(64px,8.4vw,98px);width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}
+header.nav.solid .brand-logo{height:clamp(56px,7.4vw,82px);transition:height .5s var(--ease)}
+.brand-logo-foot{height:58px}
+@media(max-width:980px){.brand-logo{height:58px}.brand-logo-foot{height:46px}}
+@media(max-width:560px){.brand-logo{height:48px}.brand-logo-foot{height:40px}}
 nav .links{display:flex;gap:30px;align-items:center}
 nav .links a{color:var(--bone-dim);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.04em;transition:color .25s}
 nav .links a:hover{color:var(--bone)}
