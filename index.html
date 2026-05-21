@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Bucktail &mdash; The World's Premier Community for the Outdoor Enthusiast</title>
+<meta name="description" content="Bucktail is the home of the outdoor world — a no-judgment community for hunters and anglers, and the trusted broker connecting you to verified outfitters, guides, and experiences." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d0a'/%3E%3Cpath d='M32 12c-3 6-9 9-15 9 4 4 6 9 6 14m9-23c3 6 9 9 15 9-4 4-6 9-6 14' stroke='%23e7a23c' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='44' r='6' fill='%23e7a23c'/%3E%3Cpath d='M32 50c0 6-2 9-2 9s-2-3-2-9' fill='%23b8895a'/%3E%3C/svg%3E" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --ink:#090b08;
+  --ink-2:#0f130d;
+  --ink-3:#161b12;
+  --bone:#f3ecdd;
+  --bone-dim:#bcb6a6;
+  --gold:#e7a23c;
+  --gold-soft:#f0c074;
+  --gold-deep:#c47a26;
+  --ember:#e2602a;
+  --moss:#2c3a22;
+  --sage:#93a571;
+  --teal:#54a0a0;
+  --buck:#bd8b58;
+  --line:rgba(243,236,221,.12);
+  --maxw:1240px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--bone);
+  font-family:'Manrope',sans-serif;
+  font-weight:400;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:var(--ink)}
+
+/* ---------- grain + vignette atmosphere ---------- */
+.grain{
+  position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+.vignette{
+  position:fixed;inset:0;z-index:8999;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 30%,transparent 55%,rgba(0,0,0,.55) 100%);
+}
+.scroll-bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:9500;
+  background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-soft));box-shadow:0 0 12px rgba(231,162,60,.6)}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:8000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px clamp(18px,4vw,54px);
+  transition:background .5s var(--ease),padding .5s var(--ease),border-color .5s;
+  border-bottom:1px solid transparent;
+}
+header.nav.solid{background:rgba(9,11,8,.82);backdrop-filter:blur(14px);padding-top:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--bone)}
+.brand svg{width:34px;height:34px;flex:0 0 auto}
+.brand .wm{font-family:'Anton',sans-serif;font-size:25px;letter-spacing:3px;text-transform:uppercase;line-height:1}
+.brand .wm b{color:var(--gold)}
+nav .links{display:flex;gap:30px;align-items:center}
+nav .links a{color:var(--bone-dim);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.04em;transition:color .25s}
+nav .links a:hover{color:var(--bone)}
+.btn{
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;
+  border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:9px;
+  padding:13px 24px;border-radius:40px;transition:transform .3s var(--ease),box-shadow .3s,background .3s,color .3s;
+}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#160d02;box-shadow:0 6px 26px rgba(231,162,60,.32)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(231,162,60,.5)}
+.btn-ghost{background:rgba(243,236,221,.04);color:var(--bone);border:1px solid var(--line)}
+.btn-ghost:hover{background:rgba(243,236,221,.1);transform:translateY(-3px)}
+.nav-toggle{display:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+#scene{position:absolute;inset:0;z-index:0;display:block}
+.hero.no3d #scene{background:
+  radial-gradient(80% 60% at 70% 18%,rgba(231,162,60,.5),transparent 60%),
+  radial-gradient(120% 90% at 50% 120%,rgba(44,58,34,.9),transparent 70%),
+  linear-gradient(180deg,#1a1408,#090b08)}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(9,11,8,.35) 0%,transparent 30%,transparent 55%,rgba(9,11,8,.85) 100%)}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,54px)}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:12.5px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:26px}
+.eyebrow::before{content:"";width:38px;height:1px;background:var(--gold)}
+h1.hero-title{
+  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(46px,8.4vw,124px);line-height:.92;letter-spacing:.005em;
+  text-shadow:0 8px 50px rgba(0,0,0,.5);max-width:14ch;
+}
+h1.hero-title .l{display:block;overflow:hidden}
+h1.hero-title em{font-style:normal;color:var(--gold);position:relative}
+.hero-sub{font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+  font-size:clamp(17px,2.1vw,25px);color:#ece3d2;max-width:46ch;margin:28px 0 38px;line-height:1.5}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.hero-meta{position:absolute;left:clamp(18px,4vw,54px);bottom:34px;z-index:2;display:flex;gap:34px;flex-wrap:wrap}
+.hero-meta .m{display:flex;flex-direction:column;gap:2px}
+.hero-meta .m b{font-family:'Anton',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;line-height:1}
+.hero-meta .m span{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-dim)}
+.scrollcue{position:absolute;right:clamp(18px,4vw,54px);bottom:34px;z-index:2;writing-mode:vertical-rl;
+  font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim);display:flex;align-items:center;gap:14px}
+.scrollcue::after{content:"";width:1px;height:54px;background:linear-gradient(var(--gold),transparent);animation:cue 2s var(--ease) infinite}
+@keyframes cue{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.2);transform-origin:bottom}}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+
+/* ---------- section shell ---------- */
+section{position:relative;z-index:2}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(72px,11vw,150px) clamp(18px,4vw,54px)}
+.kicker{font-size:12.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.kicker::before{content:"";width:30px;height:1px;background:var(--gold)}
+h2.sec{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(34px,5.4vw,76px);line-height:.96;letter-spacing:.01em}
+h2.sec em{font-style:normal;color:var(--gold)}
+.lead{font-family:'Fraunces',serif;font-size:clamp(18px,2vw,23px);color:#ddd4c2;max-width:60ch;line-height:1.55;margin-top:22px}
+p.body{color:var(--bone-dim);max-width:58ch;margin-top:18px;font-size:16.5px}
+
+/* ---------- different / brag board ---------- */
+.different{background:
+  radial-gradient(90% 70% at 12% 0%,rgba(44,58,34,.55),transparent 60%),
+  linear-gradient(180deg,#090b08,#0c100a)}
+.board{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:54px}
+.tile{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);min-height:200px;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:20px;transition:transform .5s var(--ease),box-shadow .5s}
+.tile:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.tile svg.art{position:absolute;inset:0;width:100%;height:100%;opacity:.92}
+.tile .cap{position:relative;z-index:2}
+.tile .cap .t{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.5px;text-transform:uppercase}
+.tile .cap .s{font-size:12.5px;color:rgba(255,255,255,.78);margin-top:3px}
+.tile .badge{position:absolute;top:14px;left:14px;z-index:2;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:rgba(9,11,8,.62);backdrop-filter:blur(4px);color:var(--gold-soft);padding:5px 10px;border-radius:30px;border:1px solid rgba(231,162,60,.35)}
+.t-a{grid-column:span 5}.t-b{grid-column:span 4}.t-c{grid-column:span 3}.t-d{grid-column:span 4}.t-e{grid-column:span 4}.t-f{grid-column:span 4}
+.tile .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 30%,rgba(7,9,6,.86))}
+
+/* ---------- offers ---------- */
+.offers{background:linear-gradient(180deg,#0c100a,#090b08)}
+.grid-offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:56px}
+.card{position:relative;background:linear-gradient(180deg,rgba(243,236,221,.045),rgba(243,236,221,.015));
+  border:1px solid var(--line);border-radius:20px;padding:32px 28px 28px;overflow:hidden;
+  transition:transform .5s var(--ease),border-color .5s,background .5s}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 100% 0%,rgba(231,162,60,.16),transparent 55%);opacity:0;transition:opacity .5s}
+.card:hover{transform:translateY(-8px);border-color:rgba(231,162,60,.4)}
+.card:hover::before{opacity:1}
+.card .ic{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;
+  background:rgba(231,162,60,.12);border:1px solid rgba(231,162,60,.3);margin-bottom:22px}
+.card .ic svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.7}
+.card h3{font-family:'Anton',sans-serif;font-weight:400;font-size:23px;text-transform:uppercase;letter-spacing:.4px;line-height:1.05}
+.card p{color:var(--bone-dim);font-size:14.5px;margin-top:12px;min-height:66px}
+.card .go{margin-top:18px;display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-weight:700;font-size:13.5px;
+  text-decoration:none;letter-spacing:.02em}
+.card .go svg{width:16px;height:16px;transition:transform .3s var(--ease)}
+.card:hover .go svg{transform:translateX(5px)}
+.card .num{position:absolute;top:22px;right:26px;font-family:'Anton',sans-serif;font-size:15px;color:rgba(243,236,221,.18)}
+
+/* ---------- badges (verified / certified) ---------- */
+.trust{background:
+  radial-gradient(80% 70% at 88% 10%,rgba(84,160,160,.16),transparent 55%),
+  linear-gradient(180deg,#090b08,#0c100a)}
+.trust-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;margin-top:30px}
+.seals{display:flex;gap:26px;flex-wrap:wrap;justify-content:center}
+.seal{width:200px;height:200px;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5))}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;margin-top:34px}
+.checklist .ck{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#ded5c4}
+.checklist .ck svg{width:22px;height:22px;flex:0 0 auto;margin-top:1px}
+
+/* ---------- broker band ---------- */
+.broker{position:relative;overflow:hidden;background:linear-gradient(120deg,#11150d,#0a0c08)}
+.broker::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(60% 120% at 0% 100%,rgba(231,162,60,.2),transparent 60%),
+  radial-gradient(50% 100% at 100% 0%,rgba(84,160,160,.16),transparent 60%)}
+.broker .wrap{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
+.steps{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.step{display:flex;gap:18px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line)}
+.step b{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);min-width:42px}
+.step .st{font-weight:700;font-size:16px}
+.step .sd{color:var(--bone-dim);font-size:14px;margin-top:2px}
+
+/* ---------- meet don ---------- */
+.don{background:radial-gradient(70% 90% at 80% 40%,rgba(44,58,34,.45),transparent 60%),linear-gradient(180deg,#0c100a,#090b08)}
+.don .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:50px;align-items:center}
+.don-portrait{position:relative;display:grid;place-items:center;aspect-ratio:1/1;border-radius:26px;
+  background:radial-gradient(circle at 50% 35%,rgba(231,162,60,.22),transparent 62%);border:1px solid var(--line)}
+.don-portrait svg.mascot{width:78%;height:78%;filter:drop-shadow(0 26px 50px rgba(0,0,0,.55))}
+.don-portrait .ring{position:absolute;inset:18px;border:1px dashed rgba(231,162,60,.35);border-radius:20px;animation:spin 60s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);line-height:1.42;color:#efe7d6}
+.quote .mk{color:var(--gold)}
+.sig{margin-top:24px;display:flex;align-items:center;gap:14px}
+.sig .nm{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:1px}
+.sig .rl{font-size:12.5px;color:var(--bone-dim);letter-spacing:.06em}
+
+/* ---------- cta / signup ---------- */
+.join{position:relative;overflow:hidden;background:linear-gradient(160deg,#1a1407,#0a0c08 60%)}
+.join::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 50% 0%,rgba(231,162,60,.28),transparent 60%)}
+.join .wrap{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center}
+.join h2{max-width:18ch}
+.signup{display:flex;gap:12px;margin-top:34px;width:100%;max-width:520px;flex-wrap:wrap;justify-content:center}
+.signup input{flex:1;min-width:240px;background:rgba(243,236,221,.06);border:1px solid var(--line);border-radius:40px;
+  padding:15px 22px;color:var(--bone);font-family:inherit;font-size:15px;outline:none;transition:border-color .3s}
+.signup input:focus{border-color:var(--gold)}
+.fineprint{font-size:12.5px;color:var(--bone-dim);margin-top:16px}
+
+/* ---------- footer ---------- */
+footer{background:#070906;border-top:1px solid var(--line);position:relative;z-index:2}
+.foot{max-width:var(--maxw);margin:0 auto;padding:64px clamp(18px,4vw,54px) 30px;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+.foot .col h4{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.foot .col a{display:block;color:var(--bone-dim);text-decoration:none;font-size:14px;margin-bottom:10px;transition:color .25s}
+.foot .col a:hover{color:var(--bone)}
+.foot .about p{color:var(--bone-dim);font-size:14px;margin-top:14px;max-width:34ch}
+.socials{display:flex;gap:12px;margin-top:18px}
+.socials a{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--bone-dim);transition:.3s}
+.socials a:hover{color:var(--gold);border-color:var(--gold);transform:translateY(-3px)}
+.socials svg{width:17px;height:17px;fill:currentColor}
+.foot-bottom{max-width:var(--maxw);margin:0 auto;padding:20px clamp(18px,4vw,54px);border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--bone-dim)}
+
+/* ---------- mascot guide ---------- */
+.guide{position:fixed;left:24px;bottom:24px;z-index:8500;display:flex;align-items:flex-end;gap:12px;
+  transform:translateY(28px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.guide.show{opacity:1;transform:none}
+.guide .av{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 50% 30%,#20271a,#0d100b);
+  border:2px solid var(--gold);display:grid;place-items:end center;overflow:hidden;flex:0 0 auto;
+  box-shadow:0 12px 30px rgba(0,0,0,.5);animation:bob 4s ease-in-out infinite}
+.guide .av svg{width:96%;height:96%;margin-bottom:-4px}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.bubble{position:relative;max-width:248px;background:var(--bone);color:#1a1710;border-radius:16px;padding:13px 16px;
+  font-size:13.5px;line-height:1.42;font-weight:500;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.bubble b{color:var(--gold-deep)}
+.bubble::after{content:"";position:absolute;left:-7px;bottom:16px;border:8px solid transparent;border-right-color:var(--bone);border-left:0}
+.bubble .who{display:block;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold-deep);margin-bottom:3px;text-transform:uppercase}
+.guide .x{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;background:#1a1710;color:var(--bone);
+  border:1px solid var(--line);cursor:pointer;font-size:13px;line-height:20px;text-align:center}
+
+/* ---------- responsive ---------- */
+@media(max-width:980px){
+  nav .links{display:none}
+  .nav-toggle{display:inline-flex}
+  .trust-grid,.broker .wrap,.don .wrap{grid-template-columns:1fr;gap:36px}
+  .checklist{grid-template-columns:1fr 1fr}
+  .foot{grid-template-columns:1fr 1fr}
+  .t-a,.t-b,.t-c,.t-d,.t-e,.t-f{grid-column:span 6}
+}
+@media(max-width:560px){
+  .hero-meta{gap:20px}.hero-meta .m b{font-size:21px}
+  .checklist{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr}
+  .guide{left:14px;bottom:14px}.bubble{max-width:200px}
+  .signup input{min-width:100%}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body class="hero-loading">
+
+<div class="grain"></div>
+<div class="vignette"></div>
+<div class="scroll-bar" id="bar"></div>
+
+<!-- ===== reusable SVG sprite: Don mascot + logo mark ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="don-mascot" viewBox="0 0 200 224">
+    <defs>
+      <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e9c19a"/><stop offset="1" stop-color="#d49a6e"/>
+      </linearGradient>
+      <linearGradient id="beard" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8a8780"/><stop offset="1" stop-color="#5b5851"/>
+      </linearGradient>
+    </defs>
+    <!-- shoulders / camo tee -->
+    <path d="M28 224 C28 176 60 158 100 158 C140 158 172 176 172 224 Z" fill="#3a4a2c"/>
+    <path d="M28 224 C28 176 60 158 100 158 C140 158 172 176 172 224 Z" fill="none"/>
+    <g clip-path="none">
+      <ellipse cx="55" cy="200" rx="20" ry="15" fill="#56673b"/>
+      <ellipse cx="120" cy="210" rx="26" ry="18" fill="#2c3a20"/>
+      <ellipse cx="150" cy="188" rx="16" ry="13" fill="#6d7d4c"/>
+      <ellipse cx="86" cy="186" rx="15" ry="11" fill="#5a6b3c"/>
+      <ellipse cx="40" cy="216" rx="14" ry="11" fill="#bd8b58" opacity=".7"/>
+      <ellipse cx="108" cy="184" rx="9" ry="7" fill="#86703f" opacity=".8"/>
+    </g>
+    <!-- bucktail patch -->
+    <circle cx="100" cy="198" r="13" fill="#0e120b" stroke="#e7a23c" stroke-width="2"/>
+    <path d="M100 190c-2 4-6 6-10 6 3 3 4 6 4 9m6-15c2 4 6 6 10 6-3 3-4 6-4 9" stroke="#e7a23c" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <!-- neck -->
+    <path d="M82 150h36v22c0 8-36 8-36 0z" fill="#d49a6e"/>
+    <path d="M82 162c8 7 28 7 36 0v10c0 8-36 8-36 0z" fill="#b9835a"/>
+    <!-- ears -->
+    <ellipse cx="56" cy="104" rx="10" ry="14" fill="url(#skin)"/>
+    <ellipse cx="144" cy="104" rx="10" ry="14" fill="url(#skin)"/>
+    <!-- head (bald) -->
+    <path d="M58 96c0-31 19-54 42-54s42 23 42 54c0 34-21 60-42 60S58 130 58 96z" fill="url(#skin)"/>
+    <!-- pate highlight -->
+    <ellipse cx="92" cy="64" rx="26" ry="16" fill="#f3d3b0" opacity=".55"/>
+    <!-- temple shade -->
+    <path d="M58 96c0-10 2-19 6-27 0 22 4 40 14 52-12-4-20-14-20-25z" fill="#c98c61" opacity=".5"/>
+    <!-- gray side stubble above ears -->
+    <path d="M60 112c-3-10-3-22 0-30 4 6 6 16 5 30z" fill="#7c7a72"/>
+    <path d="M140 112c3-10 3-22 0-30-4 6-6 16-5 30z" fill="#7c7a72"/>
+    <!-- beard -->
+    <path d="M62 104c2 30 16 56 38 56s36-26 38-56c-6 8-12 10-12 22 0 0-9 12-26 12s-26-12-26-12c0-12-6-14-12-22z" fill="#7d7a72"/>
+    <path d="M62 104c2 30 16 56 38 56s36-26 38-56c-6 8-12 10-12 22 0 0-9 12-26 12s-26-12-26-12c0-12-6-14-12-22z" fill="url(#beard)" opacity=".55"/>
+    <!-- stubble speckle -->
+    <g fill="#4f4d47" opacity=".5">
+      <circle cx="78" cy="128" r="1.4"/><circle cx="86" cy="138" r="1.4"/><circle cx="96" cy="144" r="1.4"/><circle cx="108" cy="140" r="1.4"/><circle cx="118" cy="130" r="1.4"/><circle cx="124" cy="120" r="1.4"/><circle cx="72" cy="118" r="1.4"/><circle cx="100" cy="150" r="1.4"/>
+    </g>
+    <!-- mustache -->
+    <path d="M84 118c5 4 11 4 16 0 5 4 11 4 16 0-3 6-9 8-16 6-7 2-13 0-16-6z" fill="#6f6d66"/>
+    <!-- mouth -->
+    <path d="M88 130c7 5 17 5 24 0" stroke="#7a4634" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <!-- nose -->
+    <path d="M100 96c-3 8-7 12-7 15 0 3 4 5 7 5s7-2 7-5c0-3-4-7-7-15z" fill="#cd9067"/>
+    <!-- eyebrows (gray) -->
+    <path d="M70 84c8-4 17-4 23 0" stroke="#8b887f" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M107 84c6-4 15-4 23 0" stroke="#8b887f" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <!-- eyes -->
+    <ellipse cx="81" cy="95" rx="4.4" ry="4.8" fill="#fff"/><circle cx="82" cy="96" r="2.6" fill="#3a2c1d"/>
+    <ellipse cx="119" cy="95" rx="4.4" ry="4.8" fill="#fff"/><circle cx="118" cy="96" r="2.6" fill="#3a2c1d"/>
+    <!-- glasses (signature black rectangular) -->
+    <g fill="none" stroke="#16140f" stroke-width="4.2">
+      <rect x="66" y="86" width="30" height="20" rx="5" fill="rgba(120,150,160,.14)"/>
+      <rect x="104" y="86" width="30" height="20" rx="5" fill="rgba(120,150,160,.14)"/>
+      <path d="M96 93h8"/>
+      <path d="M66 90l-10-3"/><path d="M134 90l10-3"/>
+    </g>
+    <rect x="68" y="88" width="9" height="4" rx="2" fill="#fff" opacity=".5"/>
+  </symbol>
+
+  <symbol id="logo-mark" viewBox="0 0 64 64">
+    <path d="M32 12c-3 6-9 9-15 9 4 4 6 9 6 14m9-23c3 6 9 9 15 9-4 4-6 9-6 14" stroke="#e7a23c" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <circle cx="32" cy="44" r="6.5" fill="#e7a23c"/>
+    <path d="M32 50c0 6-2 10-2 10s-2-4-2-10" fill="#bd8b58"/>
+  </symbol>
+</svg>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <a class="brand" href="#top">
+    <svg><use href="#logo-mark"/></svg>
+    <span class="wm">BUCK<b>TAIL</b></span>
+  </a>
+  <nav>
+    <div class="links">
+      <a href="#community">The Community</a>
+      <a href="#offers">Outfitters</a>
+      <a href="#trust">Get Verified</a>
+      <a href="#broker">Book a Trip</a>
+      <a href="#don">Our Story</a>
+    </div>
+  </nav>
+  <a href="#join" class="btn btn-gold">Join Bucktail Nation</a>
+  <button class="btn btn-ghost nav-toggle" onclick="document.getElementById('join').scrollIntoView()">Join</button>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <canvas id="scene"></canvas>
+  <div class="hero-inner">
+    <span class="eyebrow reveal in">Est. 2004 &middot; Bucktail Nation</span>
+    <h1 class="hero-title reveal in d1">The whole <em>wild</em><br>in one place.</h1>
+    <p class="hero-sub reveal in d2">The world&rsquo;s premier community for the outdoor enthusiast &mdash; an incubator of resources for outfitters, and a gateway to extraordinary hunting and fishing experiences.</p>
+    <div class="hero-cta reveal in d3">
+      <a href="#join" class="btn btn-gold">Become a Beta User
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#community" class="btn btn-ghost">Explore the community</a>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <div class="m reveal in d3"><b>2</b><span>Hunting &amp; Fishing</span></div>
+    <div class="m reveal in d4"><b>1</b><span>No-Judgment Home</span></div>
+    <div class="m reveal in d5"><b>&infin;</b><span>Verified Experiences</span></div>
+  </div>
+  <div class="scrollcue">Scroll</div>
+</section>
+
+<!-- ===== DIFFERENT / BRAG BOARD ===== -->
+<section class="different" id="community">
+  <div class="wrap">
+    <div class="kicker reveal">What makes us different</div>
+    <h2 class="sec reveal d1">Post your <em>brag board</em>.<br>Zero judgment.</h2>
+    <p class="lead reveal d2">Other platforms bury a hero shot of your buck behind &ldquo;community guidelines.&rdquo; Bucktail is built by outdoor people, for outdoor people &mdash; a feed where the catch of a lifetime and the harvest of the season belong on the wall, not in a takedown queue. Think Instagram &amp; TikTok energy, tuned for the field and the water.</p>
+
+    <div class="board">
+      <div class="tile t-a reveal d1">
+        <svg class="art" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3a3f"/><stop offset="1" stop-color="#0a1416"/></linearGradient></defs>
+          <rect width="400" height="240" fill="url(#g1)"/>
+          <circle cx="320" cy="48" r="34" fill="#e7a23c" opacity=".5"/>
+          <path d="M70 150c40-34 120-34 175 0-30 14-55 16-90 16s-58-3-85-16z" fill="#0c1d20"/>
+          <path d="M245 150c12-10 24-12 34 0-8 9-24 9-34 0z" fill="#0c1d20"/>
+          <circle cx="120" cy="142" r="4" fill="#e7a23c"/>
+        </svg>
+        <div class="scrim"></div>
+        <span class="badge">&#10003; Bucktail Verified Charter</span>
+        <div class="cap"><div class="t">Halibut, SE Alaska</div><div class="s">@dukes_charters &middot; 96 lb barn door</div></div>
+      </div>
+      <div class="tile t-b reveal d2">
+        <svg class="art" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c14"/><stop offset="1" stop-color="#120c06"/></linearGradient></defs>
+          <rect width="400" height="240" fill="url(#g2)"/>
+          <circle cx="80" cy="60" r="46" fill="#e2602a" opacity=".4"/>
+          <path d="M150 120c-14-26-6-46-6-46s14 14 18 30m44 16c14-26 6-46 6-46s-14 14-18 30" stroke="#caa377" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M150 130c0 40 20 70 50 70s50-30 50-70c-10 14-22 20-50 20s-40-6-50-20z" fill="#1d1408"/>
+        </svg>
+        <div class="scrim"></div>
+        <span class="badge">Opening Day</span>
+        <div class="cap"><div class="t">First-light Whitetail</div><div class="s">@ridge_runner &middot; 10-point, public land</div></div>
+      </div>
+      <div class="tile t-c reveal d3">
+        <svg class="art" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#27408a"/><stop offset="1" stop-color="#0a1126"/></linearGradient></defs>
+          <rect width="300" height="240" fill="url(#g3)"/>
+          <path d="M40 150c50-30 130-30 190 0-34 16-66 18-96 18s-64-4-94-18z" fill="#0c1430"/>
+          <path d="M40 150c8 8 16 10 22 4-10 6-18 4-22-4z" fill="#27408a"/>
+          <circle cx="225" cy="55" r="26" fill="#7fb0ff" opacity=".5"/>
+        </svg>
+        <div class="scrim"></div>
+        <span class="badge">Great Lakes</span>
+        <div class="cap"><div class="t">King Salmon, Erie</div><div class="s">@dan.h &middot; 31 lb screamer</div></div>
+      </div>
+      <div class="tile t-d reveal d1">
+        <svg class="art" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243a1c"/><stop offset="1" stop-color="#0a120a"/></linearGradient></defs>
+          <rect width="400" height="200" fill="url(#g4)"/>
+          <path d="M0 130l60-40 70 30 80-50 90 40 100-30v80H0z" fill="#0e160c"/>
+          <path d="M0 150l80-30 90 24 110-40 120 36v60H0z" fill="#080c07"/>
+          <circle cx="300" cy="44" r="30" fill="#e7a23c" opacity=".45"/>
+        </svg>
+        <div class="scrim"></div>
+        <span class="badge">&#10003; Verified Outfitter</span>
+        <div class="cap"><div class="t">Backcountry Elk Camp</div><div class="s">High country, 9,400 ft</div></div>
+      </div>
+      <div class="tile t-e reveal d2">
+        <svg class="art" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f3a33"/><stop offset="1" stop-color="#06140f"/></linearGradient></defs>
+          <rect width="400" height="200" fill="url(#g5)"/>
+          <path d="M60 120c50-26 150-26 210 0-36 14-70 16-105 16s-69-3-105-16z" fill="#072019"/>
+          <path d="M250 116c14-10 28-10 40 0-12 8-28 8-40 0z" fill="#072019"/>
+          <circle cx="320" cy="50" r="28" fill="#5fd0b0" opacity=".4"/>
+        </svg>
+        <div class="scrim"></div>
+        <span class="badge">Inshore</span>
+        <div class="cap"><div class="t">Striper on the Bridge-Tunnel</div><div class="s">Chesapeake Bay &middot; 41&Prime; release</div></div>
+      </div>
+      <div class="tile t-f reveal d3">
+        <svg class="art" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2630"/><stop offset="1" stop-color="#120a10"/></linearGradient></defs>
+          <rect width="400" height="200" fill="url(#g6)"/>
+          <circle cx="90" cy="60" r="40" fill="#e2602a" opacity=".4"/>
+          <path d="M120 150c0-30 30-50 80-50s80 20 80 50z" fill="#160d12"/>
+          <path d="M150 100c-6-16 0-30 0-30s10 10 12 24" stroke="#caa377" stroke-width="5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="scrim"></div>
+        <span class="badge">Field to Table</span>
+        <div class="cap"><div class="t">How to cook your catch</div><div class="s">Ask the Pros &middot; venison backstrap</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OFFERS ===== -->
+<section class="offers" id="offers">
+  <div class="wrap">
+    <div class="kicker reveal">Five ways in</div>
+    <h2 class="sec reveal d1">Built for <em>both sides</em><br>of the outdoors.</h2>
+    <p class="body reveal d2">Whether you live for the next trip or you run the lodge, the charter, or the gear shop &mdash; Bucktail is where enthusiasts and the industry finally meet.</p>
+
+    <div class="grid-offers">
+      <div class="card reveal d1">
+        <span class="num">01</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" stroke-linejoin="round"/></svg></div>
+        <h3>Become a Beta User</h3>
+        <p>Be first into Bucktail Nation &mdash; the no-judgment feed, the brag board, and the directory built for outdoor people.</p>
+        <a class="go" href="#join">Claim your spot <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="card reveal d2">
+        <span class="num">02</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13M3 21h18M9 21v-6h6v6"/></svg></div>
+        <h3>Founding Sponsor &amp; Advertiser</h3>
+        <p>Reach every angler and hunter in one place. Lock in founding-partner pricing before the doors open.</p>
+        <a class="go" href="#join">Get the rate card <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="card reveal d3">
+        <span class="num">03</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Get Bucktail Verified</h3>
+        <p>Outfitters &amp; venues: earn the badge that tells enthusiasts you&rsquo;re the real deal &mdash; and rise to the top of the list.</p>
+        <a class="go" href="#trust">Apply for verification <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="card reveal d1">
+        <span class="num">04</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM19 8v6M22 11h-6"/></svg></div>
+        <h3>Find Verified Candidates</h3>
+        <p>Outfitters hire the hardest. Search a pool of Bucktail-certified captains, guides, and crew ready for the season.</p>
+        <a class="go" href="#join">Search candidates <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="card reveal d2">
+        <span class="num">05</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 7h18v13H3zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg></div>
+        <h3>Find an Outfitter to Work</h3>
+        <p>Job seekers: turn your skills on the water and in the woods into a paycheck with outfitters who need you.</p>
+        <a class="go" href="#join">Browse openings <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="card reveal d3">
+        <span class="num">06</span>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>Learn from the Best</h3>
+        <p>Online courses from top guides &mdash; from striper tactics to field dressing. Built with the pros, on a revenue share.</p>
+        <a class="go" href="#join">See the courses <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST / BADGES ===== -->
+<section class="trust" id="trust">
+  <div class="wrap">
+    <div class="kicker reveal">The trust layer</div>
+    <h2 class="sec reveal d1">Verified means <em>verified</em>.</h2>
+    <div class="trust-grid">
+      <div>
+        <p class="lead reveal d2">The biggest risk in the outdoors is paying good money for a bad guide. Bucktail vets the outfitters, charters, captains, and guides &mdash; so when you see the badge, you can book with confidence. It&rsquo;s the difference between a trip you&rsquo;ll never forget and one you&rsquo;ll never repeat.</p>
+        <div class="checklist">
+          <div class="ck reveal d2"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Community feed for fishing &amp; hunting</div>
+          <div class="ck reveal d2"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Directory of outfitters, guides &amp; charters</div>
+          <div class="ck reveal d3"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>News &amp; announcements</div>
+          <div class="ck reveal d3"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Bucktail gear &amp; merch</div>
+          <div class="ck reveal d4"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Online course trainings</div>
+          <div class="ck reveal d4"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Conferences, expos &amp; trade shows</div>
+          <div class="ck reveal d5"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Certifications for captains &amp; guides</div>
+          <div class="ck reveal d5"><svg viewBox="0 0 24 24" fill="none" stroke="#e7a23c" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on workshops</div>
+        </div>
+      </div>
+      <div class="seals">
+        <svg class="seal reveal d2" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="92" fill="#0e120b" stroke="#e7a23c" stroke-width="2"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(231,162,60,.4)" stroke-width="1" stroke-dasharray="2 5"/>
+          <path id="cTop" d="M100 28a72 72 0 0 1 0 144" fill="none"/>
+          <text font-family="Anton" font-size="13" letter-spacing="3" fill="#e7a23c"><textPath href="#cTop" startOffset="6%">BUCKTAIL &middot; VERIFIED &middot; OUTFITTER</textPath></text>
+          <path d="M100 64l8 16 18 2-13 13 3 18-16-9-16 9 3-18-13-13 18-2z" fill="#e7a23c"/>
+          <path d="M78 118l14 14 30-30" fill="none" stroke="#e7a23c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="100" y="150" text-anchor="middle" font-family="Manrope" font-weight="700" font-size="11" letter-spacing="2" fill="#bcb6a6">EST. 2004</text>
+        </svg>
+        <svg class="seal reveal d3" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="92" fill="#0e120b" stroke="#54a0a0" stroke-width="2"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(84,160,160,.4)" stroke-width="1" stroke-dasharray="2 5"/>
+          <path id="cTop2" d="M100 28a72 72 0 0 1 0 144" fill="none"/>
+          <text font-family="Anton" font-size="13" letter-spacing="3" fill="#7fc7c7"><textPath href="#cTop2" startOffset="7%">BUCKTAIL &middot; CERTIFIED &middot; GUIDE</textPath></text>
+          <path d="M100 60c-4 10-10 12-10 24a10 10 0 0 0 20 0c0-12-6-14-10-24z" fill="#54a0a0"/>
+          <path d="M70 120c10 24 50 24 60 0" fill="none" stroke="#54a0a0" stroke-width="5" stroke-linecap="round"/>
+          <text x="100" y="152" text-anchor="middle" font-family="Manrope" font-weight="700" font-size="11" letter-spacing="2" fill="#bcb6a6">CAPTAIN &amp; GUIDE</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BROKER ===== -->
+<section class="broker" id="broker">
+  <div class="wrap">
+    <div>
+      <div class="kicker reveal">The trip engine</div>
+      <h2 class="sec reveal d1">Your next adventure,<br><em>brokered &amp; booked.</em></h2>
+      <p class="body reveal d2">Bucktail is the trusted broker between you and the experience &mdash; search verified charters, lodges, and guides, book in a few taps, and go. Like the platforms that changed how the world travels and stays, built only for the outdoors.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal d1"><b>01</b><div><div class="st">Search the verified directory</div><div class="sd">Filter by species, region, season, and the Bucktail Verified badge.</div></div></div>
+      <div class="step reveal d2"><b>02</b><div><div class="st">Book direct, with confidence</div><div class="sd">Real availability, real reviews, no guesswork &mdash; only vetted operators.</div></div></div>
+      <div class="step reveal d3"><b>03</b><div><div class="st">Go make the memory</div><div class="sd">Then post the brag board shot back to Bucktail Nation.</div></div></div>
+      <div class="step reveal d4"><b>04</b><div><div class="st">Outfitters get found &amp; staffed</div><div class="sd">Bookings, sponsorships, and certified crew &mdash; all in one place.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MEET DON ===== -->
+<section class="don" id="don">
+  <div class="wrap">
+    <div class="don-portrait reveal d1">
+      <div class="ring"></div>
+      <svg class="mascot"><use href="#don-mascot"/></svg>
+    </div>
+    <div>
+      <div class="kicker reveal">Our story</div>
+      <h2 class="sec reveal d1" style="font-size:clamp(28px,4vw,52px)">Bought for the name.<br>Built for <em>the life.</em></h2>
+      <p class="quote reveal d2"><span class="mk">&ldquo;</span>I&rsquo;ve owned Bucktail since 2004 &mdash; it started as a saltwater lure company my uncle built. I bought it because I loved fishing&hellip; and I loved the name. Watching the world go online, I knew what it had to become: <span class="mk">the one place every hunter and angler calls home.</span> This is the thing I want to build for the rest of my life.<span class="mk">&rdquo;</span></p>
+      <div class="sig reveal d3">
+        <svg width="44" height="44" style="border-radius:50%;border:2px solid var(--gold)"><use href="#don-mascot"/></svg>
+        <div><div class="nm">DON MARTIN</div><div class="rl">Founder, Bucktail.com</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== JOIN ===== -->
+<section class="join" id="join">
+  <div class="wrap">
+    <div class="kicker reveal" style="justify-content:center">Bucktail Nation</div>
+    <h2 class="sec reveal d1">Get in before<br>the <em>doors open.</em></h2>
+    <p class="lead reveal d2" style="margin-left:auto;margin-right:auto;text-align:center">Beta users, founding sponsors, and verified outfitters get priority access and locked-in pricing. Drop your email &mdash; we&rsquo;ll send the first call.</p>
+    <form class="signup reveal d3" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.textContent='You&rsquo;re on the list. Welcome to Bucktail Nation.';">
+      <input type="email" placeholder="you@example.com" required aria-label="Email address" />
+      <button class="btn btn-gold" type="submit">Join the Nation</button>
+    </form>
+    <p class="fineprint reveal d3">No spam, ever. Priority notifications of news, launches &amp; events for Bucktail.com.</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="foot">
+    <div class="col about">
+      <a class="brand" href="#top"><svg style="width:32px;height:32px"><use href="#logo-mark"/></svg><span class="wm" style="font-size:22px">BUCK<b>TAIL</b></span></a>
+      <p>The world&rsquo;s premier community for the outdoor enthusiast. Fishing. Hunting. Verified. Together.</p>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.7 0 3 0 4.1.1 1 0 1.7.2 2.3.5.6.2 1.1.5 1.6 1s.8 1 1 1.6c.3.6.5 1.3.5 2.3.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c0 1-.2 1.7-.5 2.3-.2.6-.5 1.1-1 1.6s-1 .8-1.6 1c-.6.3-1.3.5-2.3.5-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-1 0-1.7-.2-2.3-.5-.6-.2-1.1-.5-1.6-1s-.8-1-1-1.6c-.3-.6-.5-1.3-.5-2.3C2 15 2 14.7 2 12s0-3 .1-4.1c0-1 .2-1.7.5-2.3.2-.6.5-1.1 1-1.6s1-.8 1.6-1c.6-.3 1.3-.5 2.3-.5C9 2 9.3 2 12 2zm0 5a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zM17.8 5.9a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 00-1.7-1.7C19.4 5.2 12 5.2 12 5.2s-7.4 0-8.9.4A2.5 2.5 0 001.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 001.7 1.7c1.5.4 8.9.4 8.9.4s7.4 0 8.9-.4a2.5 2.5 0 001.7-1.7C23 15.2 23 12 23 12zM9.8 15.3V8.7l5.7 3.3z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16 2c.3 2.3 1.6 3.9 3.9 4.1V9c-1.4.1-2.7-.3-3.9-1v6.6c0 4.2-3.4 6.9-6.9 5.9-2.5-.7-3.9-3.1-3.4-5.6.5-2.3 2.6-3.9 5-3.7v3a3 3 0 00-1.4-.1c-1 .2-1.6 1.1-1.4 2.1.2 1 1.2 1.6 2.2 1.4 1-.2 1.5-1 1.5-2V2z"/></svg></a>
+      </div>
+    </div>
+    <div class="col">
+      <h4>Community</h4>
+      <a href="#community">The Brag Board</a><a href="#community">Ask the Pros</a><a href="#broker">Find an Outfitter</a><a href="#offers">Bucktail Gear</a>
+    </div>
+    <div class="col">
+      <h4>For the Industry</h4>
+      <a href="#trust">Get Verified</a><a href="#offers">Sponsor &amp; Advertise</a><a href="#offers">Hire Crew</a><a href="#trust">Certifications</a>
+    </div>
+    <div class="col">
+      <h4>Get in touch</h4>
+      <a href="mailto:hello@bucktail.com">hello@bucktail.com</a><a href="#offers">Become a Partner</a><a href="#join">Join Bucktail Nation</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Bucktail.com &mdash; All Rights Reserved.</span>
+    <span>Fishing &amp; Hunting, since 2004 &middot; Bucktail Nation</span>
+  </div>
+</footer>
+
+<!-- ===== MASCOT GUIDE ===== -->
+<div class="guide" id="guide">
+  <div class="av"><svg><use href="#don-mascot"/></svg></div>
+  <div class="bubble">
+    <span class="who">Don</span>
+    <span id="guide-msg">Welcome to Bucktail &mdash; the home of the wild. Take a look around.</span>
+    <span class="x" id="guide-x" title="hide">&times;</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- nav + scroll bar ---------- */
+const nav=document.getElementById('nav'),bar=document.getElementById('bar');
+function onScroll(){
+  const y=window.scrollY||document.documentElement.scrollTop;
+  nav.classList.toggle('solid',y>40);
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.width=(h>0?(y/h*100):0)+'%';
+}
+window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* ---------- reveal on scroll ---------- */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.16});
+document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+
+/* ---------- mascot guide messages ---------- */
+const guide=document.getElementById('guide'),gmsg=document.getElementById('guide-msg');
+document.getElementById('guide-x').onclick=()=>guide.classList.remove('show');
+const msgs=[
+ {sel:'#community',t:"Post your buck or your catch here — nobody’s taking it down. This is YOUR wall."},
+ {sel:'#offers',t:"Pick your lane — enthusiast or outfitter. There’s a door for everybody."},
+ {sel:'#trust',t:"See that badge? It means I vetted ’em. Book with confidence."},
+ {sel:'#broker',t:"Find a verified trip, book it, go make the memory. Simple as that."},
+ {sel:'#don',t:"That’s me. I’ve been chasing this dream since 2004 — glad you’re here."},
+ {sel:'#join',t:"Drop your email and get in before the doors open. Welcome to the Nation."}
+];
+let shown=false;
+setTimeout(()=>{guide.classList.add('show');shown=true;},2600);
+const gio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const m=msgs.find(x=>x.sel==='#'+e.target.id);if(m){gmsg.textContent=m.t;if(shown)guide.classList.add('show');}}});},{threshold:.4});
+msgs.forEach(m=>{const el=document.querySelector(m.sel);if(el)gio.observe(el);});
+
+/* ---------- THREE.JS cinematic hero ---------- */
+(function(){
+  const canvas=document.getElementById('scene');
+  if(typeof THREE==='undefined'){document.querySelector('.hero').classList.add('no3d');return;}
+  let renderer,scene,camera,terrain,sun,particles,raf,t=0;
+  let mx=0,my=0,tx=0,ty=0;
+  const COLS=120,ROWS=120,SIZE=420;
+  try{
+    renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    scene=new THREE.Scene();
+    scene.fog=new THREE.FogExp2(0x0a0c08,0.0042);
+    camera=new THREE.PerspectiveCamera(62,window.innerWidth/window.innerHeight,.1,1200);
+    camera.position.set(0,34,118);camera.lookAt(0,8,-60);
+
+    /* terrain */
+    const geo=new THREE.PlaneGeometry(SIZE,SIZE,COLS,ROWS);
+    geo.rotateX(-Math.PI/2);
+    const pos=geo.attributes.position;
+    const base=new Float32Array(pos.count);
+    for(let i=0;i<pos.count;i++){
+      const x=pos.getX(i),z=pos.getZ(i);
+      const h=Math.sin(x*0.018)*Math.cos(z*0.02)*10 + Math.sin(x*0.05+z*0.03)*5 + Math.cos(z*0.06)*4;
+      const ridge=Math.pow(Math.abs(Math.sin(x*0.01)),1.5)*14;
+      base[i]=h+ridge;
+      pos.setY(i,base[i]);
+    }
+    geo.computeVertexNormals();
+    const mat=new THREE.MeshBasicMaterial({color:0x1c2616,wireframe:true,transparent:true,opacity:0.5});
+    terrain=new THREE.Mesh(geo,mat);scene.add(terrain);
+    terrain.userData.base=base;
+
+    /* sun */
+    const sunMat=new THREE.SpriteMaterial({color:0xe7a23c,transparent:true,opacity:.92,depthWrite:false});
+    sun=new THREE.Sprite(sunMat);sun.scale.set(120,120,1);sun.position.set(20,46,-260);scene.add(sun);
+    const haloMat=new THREE.SpriteMaterial({color:0xe2602a,transparent:true,opacity:.32,depthWrite:false});
+    const halo=new THREE.Sprite(haloMat);halo.scale.set(300,300,1);halo.position.copy(sun.position);scene.add(halo);
+
+    /* particles (embers/dust) */
+    const pn=520,pg=new THREE.BufferGeometry(),pp=new Float32Array(pn*3);
+    for(let i=0;i<pn;i++){pp[i*3]=(Math.random()-.5)*460;pp[i*3+1]=Math.random()*120;pp[i*3+2]=(Math.random()-.5)*460-60;}
+    pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+    const pmat=new THREE.PointsMaterial({color:0xf0c074,size:1.5,transparent:true,opacity:.7,depthWrite:false});
+    particles=new THREE.Points(pg,pmat);scene.add(particles);
+
+    function resize(){renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();}
+    window.addEventListener('resize',resize);
+    window.addEventListener('mousemove',(e)=>{mx=(e.clientX/window.innerWidth-.5);my=(e.clientY/window.innerHeight-.5);});
+
+    function animate(){
+      raf=requestAnimationFrame(animate);t+=0.006;
+      const p=terrain.geometry.attributes.position,b=terrain.userData.base;
+      for(let i=0;i<p.count;i++){
+        const x=p.getX(i),z=p.getZ(i);
+        p.setY(i,b[i]+Math.sin(t*1.4+x*0.03+z*0.02)*1.8);
+      }
+      p.needsUpdate=true;
+      particles.rotation.y+=0.0006;
+      const pa=particles.geometry.attributes.position;
+      for(let i=0;i<pa.count;i++){let y=pa.getY(i)+0.12;if(y>122)y=0;pa.setY(i,y);}
+      pa.needsUpdate=true;
+      tx+=(mx*16-tx)*0.04;ty+=(-my*8-ty)*0.04;
+      const sy=window.scrollY||0;
+      camera.position.x=tx;camera.position.y=34+ty - Math.min(sy*0.02,26);
+      camera.lookAt(0,8,-60);
+      renderer.render(scene,camera);
+    }
+    animate();
+  }catch(err){
+    document.querySelector('.hero').classList.add('no3d');
+    if(raf)cancelAnimationFrame(raf);
+    console.warn('3D hero fallback:',err);
+  }
+})();
+</script>
+</body>
+</html>
