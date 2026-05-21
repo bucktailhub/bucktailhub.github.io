@@ -67,6 +67,9 @@ header.nav.solid{background:rgba(9,11,8,.82);backdrop-filter:blur(14px);padding-
 .brand svg{width:34px;height:34px;flex:0 0 auto}
 .brand .wm{font-family:'Anton',sans-serif;font-size:25px;letter-spacing:3px;text-transform:uppercase;line-height:1}
 .brand .wm b{color:var(--gold)}
+.brand-logo{height:46px;width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+.brand-logo-foot{height:38px}
+@media(max-width:560px){.brand-logo{height:38px}.brand-logo-foot{height:32px}}
 nav .links{display:flex;gap:30px;align-items:center}
 nav .links a{color:var(--bone-dim);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.04em;transition:color .25s}
 nav .links a:hover{color:var(--bone)}
@@ -360,8 +363,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 <!-- ===== NAV ===== -->
 <header class="nav" id="nav">
   <a class="brand" href="#top">
-    <svg><use href="#logo-mark"/></svg>
-    <span class="wm">BUCK<b>TAIL</b></span>
+    <img src="assets/images/bucktail-logo.png" alt="Bucktail" class="brand-logo" />
   </a>
   <nav>
     <div class="links">
@@ -603,14 +605,14 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   <div class="wrap">
     <div class="don-portrait reveal d1">
       <div class="ring"></div>
-      <img class="mascot-img" src="assets/images/bucktail-mascot.png" alt="Don Martin, founder of Bucktail" />
+      <img class="mascot-img" src="assets/images/bucktail-mascot-founder.png" alt="Don Martin, founder of Bucktail" />
     </div>
     <div>
       <div class="kicker reveal">Our story</div>
       <h2 class="sec reveal d1" style="font-size:clamp(28px,4vw,52px)">Bought for the name.<br>Built for <em>the life.</em></h2>
       <p class="quote reveal d2"><span class="mk">&ldquo;</span>I&rsquo;ve owned Bucktail since 2004 &mdash; it started as a saltwater lure company my uncle built. I bought it because I loved fishing&hellip; and I loved the name. Watching the world go online, I knew what it had to become: <span class="mk">the one place every hunter and angler calls home.</span> This is the thing I want to build for the rest of my life.<span class="mk">&rdquo;</span></p>
       <div class="sig reveal d3">
-        <img src="assets/images/bucktail-mascot.png" alt="Don" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;object-position:50% 12%" />
+        <img src="assets/images/bucktail-mascot-founder.png" alt="Don" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;object-position:50% 18%" />
         <div><div class="nm">DON MARTIN</div><div class="rl">Founder, Bucktail.com</div></div>
       </div>
     </div>
@@ -635,7 +637,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 <footer>
   <div class="foot">
     <div class="col about">
-      <a class="brand" href="#top"><svg style="width:32px;height:32px"><use href="#logo-mark"/></svg><span class="wm" style="font-size:22px">BUCK<b>TAIL</b></span></a>
+      <a class="brand" href="#top"><img src="assets/images/bucktail-logo.png" alt="Bucktail" class="brand-logo brand-logo-foot" /></a>
       <p>The world&rsquo;s premier community for the outdoor enthusiast. Fishing. Hunting. Verified. Together.</p>
       <div class="socials">
         <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.7 0 3 0 4.1.1 1 0 1.7.2 2.3.5.6.2 1.1.5 1.6 1s.8 1 1 1.6c.3.6.5 1.3.5 2.3.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c0 1-.2 1.7-.5 2.3-.2.6-.5 1.1-1 1.6s-1 .8-1.6 1c-.6.3-1.3.5-2.3.5-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-1 0-1.7-.2-2.3-.5-.6-.2-1.1-.5-1.6-1s-.8-1-1-1.6c-.3-.6-.5-1.3-.5-2.3C2 15 2 14.7 2 12s0-3 .1-4.1c0-1 .2-1.7.5-2.3.2-.6.5-1.1 1-1.6s1-.8 1.6-1c.6-.3 1.3-.5 2.3-.5C9 2 9.3 2 12 2zm0 5a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zM17.8 5.9a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg></a>
@@ -665,7 +667,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 
 <!-- ===== MASCOT GUIDE ===== -->
 <div class="guide" id="guide">
-  <div class="av"><img src="assets/images/bucktail-mascot.png" alt="Don" /></div>
+  <div class="av"><img src="assets/images/bucktail-mascot-fisherman.png" alt="Don" /></div>
   <div class="bubble">
     <span class="who">Don</span>
     <span id="guide-msg">Welcome to Bucktail &mdash; the home of the wild. Take a look around.</span>
