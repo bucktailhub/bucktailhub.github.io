@@ -88,9 +88,13 @@ nav .links a:hover{color:var(--bone)}
   radial-gradient(80% 60% at 70% 18%,rgba(231,162,60,.5),transparent 60%),
   radial-gradient(120% 90% at 50% 120%,rgba(44,58,34,.9),transparent 70%),
   linear-gradient(180deg,#1a1408,#090b08)}
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+.hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(180deg,rgba(9,11,8,.35) 0%,transparent 30%,transparent 55%,rgba(9,11,8,.85) 100%)}
-.hero-inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,54px)}
+.hero-don{position:absolute;right:clamp(-90px,-2vw,30px);bottom:0;height:95%;max-height:920px;width:auto;z-index:1;pointer-events:none;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.7));-webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent 99%);mask-image:linear-gradient(to bottom,#000 82%,transparent 99%);
+  animation:donrise 1.5s var(--ease) both .35s}
+@keyframes donrise{from{opacity:0;transform:translateY(48px) scale(.99)}to{opacity:1;transform:none}}
+.hero-inner{position:relative;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,54px)}
 .eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:12.5px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:26px}
 .eyebrow::before{content:"";width:38px;height:1px;background:var(--gold)}
 h1.hero-title{
@@ -103,11 +107,11 @@ h1.hero-title em{font-style:normal;color:var(--gold);position:relative}
 .hero-sub{font-family:'Fraunces',serif;font-style:italic;font-weight:400;
   font-size:clamp(17px,2.1vw,25px);color:#ece3d2;max-width:46ch;margin:28px 0 38px;line-height:1.5}
 .hero-cta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.hero-meta{position:absolute;left:clamp(18px,4vw,54px);bottom:34px;z-index:2;display:flex;gap:34px;flex-wrap:wrap}
+.hero-meta{position:absolute;left:clamp(18px,4vw,54px);bottom:34px;z-index:3;display:flex;gap:34px;flex-wrap:wrap}
 .hero-meta .m{display:flex;flex-direction:column;gap:2px}
 .hero-meta .m b{font-family:'Anton',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;line-height:1}
 .hero-meta .m span{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-dim)}
-.scrollcue{position:absolute;right:clamp(18px,4vw,54px);bottom:34px;z-index:2;writing-mode:vertical-rl;
+.scrollcue{position:absolute;right:clamp(18px,4vw,54px);bottom:34px;z-index:3;writing-mode:vertical-rl;
   font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim);display:flex;align-items:center;gap:14px}
 .scrollcue::after{content:"";width:1px;height:54px;background:linear-gradient(var(--gold),transparent);animation:cue 2s var(--ease) infinite}
 @keyframes cue{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.2);transform-origin:bottom}}
@@ -192,7 +196,7 @@ p.body{color:var(--bone-dim);max-width:58ch;margin-top:18px;font-size:16.5px}
 .don .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:50px;align-items:center}
 .don-portrait{position:relative;display:grid;place-items:center;aspect-ratio:1/1;border-radius:26px;
   background:radial-gradient(circle at 50% 35%,rgba(231,162,60,.22),transparent 62%);border:1px solid var(--line)}
-.don-portrait svg.mascot{width:78%;height:78%;filter:drop-shadow(0 26px 50px rgba(0,0,0,.55))}
+.don-portrait svg.mascot,.don-portrait .mascot-img{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 26px 50px rgba(0,0,0,.55))}
 .don-portrait .ring{position:absolute;inset:18px;border:1px dashed rgba(231,162,60,.35);border-radius:20px;animation:spin 60s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);line-height:1.42;color:#efe7d6}
@@ -235,6 +239,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   border:2px solid var(--gold);display:grid;place-items:end center;overflow:hidden;flex:0 0 auto;
   box-shadow:0 12px 30px rgba(0,0,0,.5);animation:bob 4s ease-in-out infinite}
 .guide .av svg{width:96%;height:96%;margin-bottom:-4px}
+.guide .av img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
 @keyframes bob{50%{transform:translateY(-6px)}}
 .bubble{position:relative;max-width:248px;background:var(--bone);color:#1a1710;border-radius:16px;padding:13px 16px;
   font-size:13.5px;line-height:1.42;font-weight:500;box-shadow:0 14px 34px rgba(0,0,0,.45)}
@@ -252,6 +257,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   .checklist{grid-template-columns:1fr 1fr}
   .foot{grid-template-columns:1fr 1fr}
   .t-a,.t-b,.t-c,.t-d,.t-e,.t-f{grid-column:span 6}
+  .hero-don{opacity:.16;right:-120px;height:74%}
 }
 @media(max-width:560px){
   .hero-meta{gap:20px}.hero-meta .m b{font-size:21px}
@@ -259,6 +265,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   .foot{grid-template-columns:1fr}
   .guide{left:14px;bottom:14px}.bubble{max-width:200px}
   .signup input{min-width:100%}
+  .hero-don{display:none}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
@@ -367,6 +374,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
   <canvas id="scene"></canvas>
+  <img class="hero-don" src="assets/images/bucktail-mascot.png" alt="Don Martin, founder of Bucktail" />
   <div class="hero-inner">
     <span class="eyebrow reveal in">Est. 2004 &middot; Bucktail Nation</span>
     <h1 class="hero-title reveal in d1">The whole <em>wild</em><br>in one place.</h1>
@@ -590,14 +598,14 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
   <div class="wrap">
     <div class="don-portrait reveal d1">
       <div class="ring"></div>
-      <svg class="mascot"><use href="#don-mascot"/></svg>
+      <img class="mascot-img" src="assets/images/bucktail-mascot.png" alt="Don Martin, founder of Bucktail" />
     </div>
     <div>
       <div class="kicker reveal">Our story</div>
       <h2 class="sec reveal d1" style="font-size:clamp(28px,4vw,52px)">Bought for the name.<br>Built for <em>the life.</em></h2>
       <p class="quote reveal d2"><span class="mk">&ldquo;</span>I&rsquo;ve owned Bucktail since 2004 &mdash; it started as a saltwater lure company my uncle built. I bought it because I loved fishing&hellip; and I loved the name. Watching the world go online, I knew what it had to become: <span class="mk">the one place every hunter and angler calls home.</span> This is the thing I want to build for the rest of my life.<span class="mk">&rdquo;</span></p>
       <div class="sig reveal d3">
-        <svg width="44" height="44" style="border-radius:50%;border:2px solid var(--gold)"><use href="#don-mascot"/></svg>
+        <img src="assets/images/bucktail-mascot.png" alt="Don" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;object-position:50% 12%" />
         <div><div class="nm">DON MARTIN</div><div class="rl">Founder, Bucktail.com</div></div>
       </div>
     </div>
@@ -652,7 +660,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 
 <!-- ===== MASCOT GUIDE ===== -->
 <div class="guide" id="guide">
-  <div class="av"><svg><use href="#don-mascot"/></svg></div>
+  <div class="av"><img src="assets/images/bucktail-mascot.png" alt="Don" /></div>
   <div class="bubble">
     <span class="who">Don</span>
     <span id="guide-msg">Welcome to Bucktail &mdash; the home of the wild. Take a look around.</span>
