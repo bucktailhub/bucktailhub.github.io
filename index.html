@@ -64,19 +64,20 @@ header.nav{
 .nav-inner{
   max-width:var(--maxw);margin:0 auto;
   padding:0 clamp(18px,4vw,54px);
-  display:flex;align-items:center;justify-content:space-between;gap:24px;
-  width:100%;
+  display:flex;align-items:center;justify-content:flex-end;gap:24px;
+  width:100%;position:relative;
 }
+header.nav .brand{position:absolute;left:clamp(18px,4vw,54px);top:0;z-index:2;display:block;line-height:0}
 header.nav.solid{background:rgba(9,11,8,.82);backdrop-filter:blur(14px);padding-top:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--bone)}
 .brand svg{width:34px;height:34px;flex:0 0 auto}
 .brand .wm{font-family:'Anton',sans-serif;font-size:25px;letter-spacing:3px;text-transform:uppercase;line-height:1}
 .brand .wm b{color:var(--gold)}
-.brand-logo{height:clamp(144px,19.5vw,252px);width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 10px 28px rgba(0,0,0,.55));transition:height .5s var(--ease)}
-header.nav.solid .brand-logo{height:clamp(108px,14vw,176px)}
-.brand-logo-foot{height:108px}
-@media(max-width:980px){.brand-logo{height:117px}.brand-logo-foot{height:80px}}
-@media(max-width:560px){.brand-logo{height:90px}.brand-logo-foot{height:66px}}
+.brand-logo{height:clamp(120px,16vw,200px);width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 10px 28px rgba(0,0,0,.55));transition:height .5s var(--ease)}
+header.nav.solid .brand-logo{height:clamp(64px,8vw,96px)}
+.brand-logo-foot{height:96px}
+@media(max-width:980px){.brand-logo{height:96px}.brand-logo-foot{height:72px}}
+@media(max-width:560px){.brand-logo{height:72px}.brand-logo-foot{height:56px}}
 nav .links{display:flex;gap:30px;align-items:center}
 nav .links a{color:var(--bone-dim);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.04em;transition:color .25s}
 nav .links a:hover{color:var(--bone)}
