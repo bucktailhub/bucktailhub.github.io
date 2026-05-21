@@ -57,21 +57,26 @@ body{
 /* ---------- nav ---------- */
 header.nav{
   position:fixed;top:0;left:0;right:0;z-index:8000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:22px clamp(18px,4vw,54px);
+  padding:18px 0;
   transition:background .5s var(--ease),padding .5s var(--ease),border-color .5s;
   border-bottom:1px solid transparent;
 }
-header.nav.solid{background:rgba(9,11,8,.82);backdrop-filter:blur(14px);padding-top:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.nav-inner{
+  max-width:var(--maxw);margin:0 auto;
+  padding:0 clamp(18px,4vw,54px);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  width:100%;
+}
+header.nav.solid{background:rgba(9,11,8,.82);backdrop-filter:blur(14px);padding-top:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--bone)}
 .brand svg{width:34px;height:34px;flex:0 0 auto}
 .brand .wm{font-family:'Anton',sans-serif;font-size:25px;letter-spacing:3px;text-transform:uppercase;line-height:1}
 .brand .wm b{color:var(--gold)}
-.brand-logo{height:clamp(64px,8.4vw,98px);width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}
-header.nav.solid .brand-logo{height:clamp(56px,7.4vw,82px);transition:height .5s var(--ease)}
-.brand-logo-foot{height:58px}
-@media(max-width:980px){.brand-logo{height:58px}.brand-logo-foot{height:46px}}
-@media(max-width:560px){.brand-logo{height:48px}.brand-logo-foot{height:40px}}
+.brand-logo{height:clamp(96px,13vw,168px);width:auto;display:block;flex:0 0 auto;filter:drop-shadow(0 8px 22px rgba(0,0,0,.55));transition:height .5s var(--ease)}
+header.nav.solid .brand-logo{height:clamp(72px,9.5vw,118px)}
+.brand-logo-foot{height:72px}
+@media(max-width:980px){.brand-logo{height:78px}.brand-logo-foot{height:54px}}
+@media(max-width:560px){.brand-logo{height:60px}.brand-logo-foot{height:44px}}
 nav .links{display:flex;gap:30px;align-items:center}
 nav .links a{color:var(--bone-dim);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.04em;transition:color .25s}
 nav .links a:hover{color:var(--bone)}
@@ -112,7 +117,9 @@ h1.hero-title em{font-style:normal;color:var(--gold);position:relative}
 .hero-sub{font-family:'Fraunces',serif;font-style:italic;font-weight:400;
   font-size:clamp(17px,2.1vw,25px);color:#ece3d2;max-width:46ch;margin:28px 0 38px;line-height:1.5}
 .hero-cta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.hero-meta{position:absolute;left:clamp(18px,4vw,54px);bottom:34px;z-index:3;display:flex;gap:34px;flex-wrap:wrap}
+.hero-meta{position:absolute;left:0;right:0;bottom:34px;z-index:3;
+  max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,54px);
+  display:flex;gap:34px;flex-wrap:wrap}
 .hero-meta .m{display:flex;flex-direction:column;gap:2px}
 .hero-meta .m b{font-family:'Anton',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;line-height:1}
 .hero-meta .m span{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-dim)}
@@ -364,20 +371,22 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 
 <!-- ===== NAV ===== -->
 <header class="nav" id="nav">
-  <a class="brand" href="#top">
-    <img src="assets/images/bucktail-logo.png" alt="Bucktail" class="brand-logo" />
-  </a>
-  <nav>
-    <div class="links">
-      <a href="#community">The Community</a>
-      <a href="#offers">Outfitters</a>
-      <a href="#trust">Get Verified</a>
-      <a href="#broker">Book a Trip</a>
-      <a href="#don">Our Story</a>
-    </div>
-  </nav>
-  <a href="#join" class="btn btn-gold">Join Bucktail Nation</a>
-  <button class="btn btn-ghost nav-toggle" onclick="document.getElementById('join').scrollIntoView()">Join</button>
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <img src="assets/images/bucktail-logo.png" alt="Bucktail" class="brand-logo" />
+    </a>
+    <nav>
+      <div class="links">
+        <a href="#community">The Community</a>
+        <a href="#offers">Outfitters</a>
+        <a href="#trust">Get Verified</a>
+        <a href="#broker">Book a Trip</a>
+        <a href="#don">Our Story</a>
+      </div>
+    </nav>
+    <a href="#join" class="btn btn-gold">Join Bucktail Nation</a>
+    <button class="btn btn-ghost nav-toggle" onclick="document.getElementById('join').scrollIntoView()">Join</button>
+  </div>
 </header>
 
 <!-- ===== HERO ===== -->
