@@ -63,7 +63,7 @@ header.nav{
 }
 .nav-inner{
   max-width:var(--maxw);margin:0 auto;
-  padding:0 clamp(18px,4vw,54px);
+  padding:0 clamp(72px,16vw,300px) 0 clamp(18px,4vw,54px);
   display:flex;align-items:center;justify-content:flex-end;gap:24px;
   width:100%;position:relative;
 }
@@ -679,7 +679,7 @@ footer{background:#070906;border-top:1px solid var(--line);position:relative;z-i
 
 <!-- ===== MASCOT GUIDE ===== -->
 <div class="guide" id="guide">
-  <div class="av"><img src="assets/images/bucktail-mascot-fisherman.png" alt="Don" /></div>
+  <div class="av"><img src="assets/images/bucktail-mascot-deepsea.png" alt="Don" /></div>
   <div class="bubble">
     <span class="who">Don</span>
     <span id="guide-msg">Welcome to Bucktail &mdash; the home of the wild. Take a look around.</span>
@@ -705,7 +705,8 @@ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
 
 /* ---------- mascot guide messages ---------- */
 const guide=document.getElementById('guide'),gmsg=document.getElementById('guide-msg');
-document.getElementById('guide-x').onclick=()=>guide.classList.remove('show');
+let dismissed=false;
+document.getElementById('guide-x').onclick=()=>{guide.classList.remove('show');dismissed=true;};
 const msgs=[
  {sel:'#community',t:"Post your buck or your catch here — nobody’s taking it down. This is YOUR wall."},
  {sel:'#offers',t:"Pick your lane — enthusiast or outfitter. There’s a door for everybody."},
@@ -714,9 +715,7 @@ const msgs=[
  {sel:'#don',t:"That’s me. I’ve been chasing this dream since 2004 — glad you’re here."},
  {sel:'#join',t:"Drop your email and get in before the doors open. Welcome to the Nation."}
 ];
-let shown=false;
-setTimeout(()=>{guide.classList.add('show');shown=true;},2600);
-const gio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const m=msgs.find(x=>x.sel==='#'+e.target.id);if(m){gmsg.textContent=m.t;if(shown)guide.classList.add('show');}}});},{threshold:.4});
+const gio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting && !dismissed){const m=msgs.find(x=>x.sel==='#'+e.target.id);if(m){gmsg.textContent=m.t;guide.classList.add('show');}}});},{threshold:.4});
 msgs.forEach(m=>{const el=document.querySelector(m.sel);if(el)gio.observe(el);});
 
 /* ---------- THREE.JS cinematic hero ---------- */
